@@ -11,26 +11,23 @@ def run_pipeline(input_file, pattern, mac2unix, progress_bar):
 
     if pattern=="":
         # Select input file
-        infile = os.path.basename(input_file)
+        infile = str(os.path.basename(input_file)).replace(" ","\ ")
     
-    # Convert path to windows format
-    input_file_fixed = str(input_file).replace("/","\\")
-
     # Choose between dos and mac
-    convmode = "ascii" if not mac2unix else "mac"
+    os_opt = "dos" if not mac2unix else "mac"
 
     # Change to the input file's directory
     os.chdir(os.path.dirname(input_file)) if pattern=="" else os.chdir(input_file)
 
     if pattern=="":
-        command = f"dos2unix -e -c {convmode} \"{infile}\""
+        command = f"{os_opt}2unix -e {infile}"
     else:
-        command = f"dos2unix -e -c {convmode} {pattern}"
+        command = f"{os_opt}2unix -e {pattern}"
     
     try:
-        subprocess.run(command, check=True, creationflags=subprocess.CREATE_NO_WINDOW)
+        subprocess.run(["bash", "-c", command], check=True)
         progress_bar.stop()
-        messagebox.showinfo("Success", f"{input_file_fixed} converted to unix format") if pattern=="" else messagebox.showinfo("Success", f"Files at {input_file_fixed} converted to unix format")
+        messagebox.showinfo("Success", f"{input_file} converted to unix format") if pattern=="" else messagebox.showinfo("Success", f"Files at {input_file} converted to unix format")
 
     except subprocess.CalledProcessError as e:
         progress_bar.stop()
@@ -41,7 +38,6 @@ def start_thread():
     pattern = pattern_var.get()
     mac2unix = mac2unix_var.get()
 
-
     if not input_file:
         if pattern == "":
             messagebox.showwarning("Input Error", "Please select an input file.")
@@ -49,7 +45,7 @@ def start_thread():
         else:
             messagebox.showwarning("Input Error", "Please select an input folder.")
             return
-
+    
     # Start command in a new thread
     thread = threading.Thread(target=run_pipeline, args=(input_file, pattern, mac2unix, progress_bar))
     thread.start()
