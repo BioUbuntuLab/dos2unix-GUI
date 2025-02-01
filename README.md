@@ -11,4 +11,5 @@ A fast lightweight windows GUI wrapper for dos2unix
 ![](img/1.png)
 If the patterm option is left empty, when you browse, you will select an input file.
 If you use a pattern option like `*.txt` when you click browse you will select the folder your input files are located.
-**Note: This dos2unix GUI program creates a newline at the end of the file if it doesn't exist.**
+**Note 1: This dos2unix GUI program creates a newline at the end of the file if it doesn't exist.**
+**Note 2: If you wanna convert mac format files to unix, click on the mac2unix box.**
