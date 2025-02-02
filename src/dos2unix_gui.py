@@ -12,7 +12,7 @@ def run_pipeline(input_file, pattern, mac2unix, progress_bar):
 
     if pattern=="":
         # Select input file
-        infile = str(os.path.basename(input_file)).replace(" ","\ ")
+        infile = str(os.path.basename(input_file)).replace(" ","\\ ").replace("(","\\(").replace(")","\\)")
     
     # Choose between dos and mac
     os_opt = "dos" if not mac2unix else "mac"
